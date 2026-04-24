@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarBot Premium UI Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-glow: rgba(16, 185, 129, 0.4);
+            --bg: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --glass-blur: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: #94a3b8;
+            margin-bottom: 60px;
+            font-size: 1.1rem;
+        }
+
+        /* ─── 1. Scanning Animation (Radar) ─── */
+        .scanner-box {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .radar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            position: relative;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+        }
+
+        .radar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: var(--primary);
+            animation: spin 2s linear infinite;
+            filter: drop-shadow(0 0 10px var(--primary));
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .avatar-inner {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .pulse {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: var(--primary);
+            opacity: 0;
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.33); opacity: 0.5; }
+            80%, 100% { transform: scale(1.2); opacity: 0; }
+        }
+
+        /* ─── 2. Glassmorphic Cards ─── */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 32px;
+            text-align: left;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: 0.5s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(16, 185, 129, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card:hover::after {
+            left: 100%;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .card-tag {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f8fafc;
+        }
+
+        .card-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card-price {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #10b981;
+        }
+
+        .apply-btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .apply-btn:hover {
+            box-shadow: 0 0 15px var(--primary-glow);
+            transform: scale(1.05);
+        }
+
+        /* ─── 3. Confetti Trigger ─── */
+        .controls {
+            margin-top: 60px;
+        }
+
+        .confetti-btn {
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            border-radius: 100px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s;
+        }
+
+        .confetti-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.5);
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="container">
+        <h1>High-End SaaS Aesthetics</h1>
+        <p class="subtitle">A preview of the Elite Upgrade for ScholarBot</p>
+
+        <!-- 1. Scanning / Radar Section -->
+        <div class="scanner-box">
+            <div class="pulse"></div>
+            <div class="radar">
+                <div class="avatar-inner">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                        <path d="M2 17l10 5 10-5"></path>
+                        <path d="M2 12l10 5 10-5"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 20px; font-weight: 400;">Artificial Intelligence is scanning 100+ schemes...</h2>
+
+        <!-- 2. Glassmorphic Cards Grid -->
+        <div class="demo-grid">
+            <div class="glass-card">
+                <div class="card-tag">98% Match</div>
+                <div class="card-icon">🎓</div>
+                <h3 class="card-title">Reliance Foundation Scholars</h3>
+                <p class="card-desc">Designed for high-achieving undergraduate students from all streams of study.</p>
+                <div class="card-footer">
+                    <span class="card-price">₹2.0L</span>
+                    <a href="#" class="apply-btn">Apply Elite</a>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-tag" style="background:rgba(59,130,246,0.2); color:#3b82f6;">85% Match</div>
+                <div class="card-icon" style="color:#3b82f6;">⚡</div>
+                <h3 class="card-title">Siemens Engineering Grant</h3>
+                <p class="card-desc">Supporting first-year engineering students with a focus on sustainable tech.</p>
+                <div class="card-footer">
+                    <span class="card-price">₹1.5L</span>
+                    <a href="#" class="apply-btn" style="background:#3b82f6;">Apply Elite</a>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-tag" style="background:rgba(236,72,153,0.2); color:#ec4899;">Perfect Fit</div>
+                <div class="card-icon" style="color:#ec4899;">🏆</div>
+                <h3 class="card-title">HDFC Badhte Kadam</h3>
+                <p class="card-desc">Financial assistance for students across India, from school to professional courses.</p>
+                <div class="card-footer">
+                    <span class="card-price">₹1.0L</span>
+                    <a href="#" class="apply-btn" style="background:#ec4899;">Apply Elite</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Confetti Trigger -->
+        <div class="controls">
+            <button class="confetti-btn" onclick="triggerCelebration()">Celebrate Match 🎉</button>
+        </div>
+    </div>
+
+    <script>
+        // Confetti Logic
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let pieces = [];
+        const colors = ['#10b981', '#3b82f6', '#ec4899', '#f59e0b', '#ffffff'];
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+
+        function createPiece() {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * -canvas.height,
+                size: Math.random() * 10 + 5,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speed: Math.random() * 3 + 2,
+                rotation: Math.random() * 360,
+                rotationSpeed: Math.random() * 5 - 2.5
+            };
+        }
+
+        function triggerCelebration() {
+            pieces = [];
+            for (let i = 0; i < 150; i++) {
+                pieces.push(createPiece());
+            }
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            pieces.forEach((p, i) => {
+                p.y += p.speed;
+                p.rotation += p.rotationSpeed;
+                
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation * Math.PI / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                ctx.restore();
+
+                if (p.y > canvas.height) {
+                    pieces.splice(i, 1);
+                }
+            });
+
+            requestAnimationFrame(update);
+        }
+
+        update();
+    </script>
+</body>
+</html>

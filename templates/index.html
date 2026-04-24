@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScholarBot — AI Scholarship Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+  <!-- ═══ SPLASH SCREEN ═══ -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-logo-container">
+      <svg class="splash-logo" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polygon class="layer layer-1" points="12 2 2 7 12 12 22 7 12 2"></polygon>
+        <polyline class="layer layer-2" points="2 12 12 17 22 12"></polyline>
+        <polyline class="layer layer-3" points="2 17 12 22 22 17"></polyline>
+      </svg>
+    </div>
+    <div class="splash-text">ScholarBot</div>
+  </div>
+
+  <div class="layout">
+
+    <!-- ═══ SIDEBAR ═══ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="brand" onclick="window.location.reload()" style="cursor:pointer" title="Home">
+          <div class="brand-logo">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <span class="brand-name">ScholarBot</span>
+        </div>
+      </div>
+
+      <button class="new-chat-btn" onclick="startNewChat()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        New Chat
+      </button>
+
+      <div class="sidebar-nav">
+        <div class="nav-label">Try asking</div>
+        <button class="nav-item" onclick="injectMessage('What scholarships are available for SC students?')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          SC student scholarships
+        </button>
+        <button class="nav-item" onclick="injectMessage('What documents do I need for NSP?')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          Documents for NSP
+        </button>
+        <button class="nav-item" onclick="injectMessage('Girl students scholarship in Maharashtra')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+          Girl student schemes
+        </button>
+        <button class="nav-item" onclick="injectMessage('How does the NSP portal work?')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          How NSP works
+        </button>
+        <button class="nav-item" onclick="injectMessage('Income limit for OBC scholarship?')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23" />
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </svg>
+          OBC income limit
+        </button>
+        <button class="nav-item" onclick="injectMessage('B.Tech scholarships for 2nd year students')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          B.Tech scholarships
+        </button>
+
+        <div id="recent-searches-list"></div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">
+          <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+          <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" style="display:none">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+          <span id="theme-label">Light mode</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ═══ MAIN ═══ -->
+    <main class="main">
+
+      <!-- Topbar -->
+      <header class="topbar">
+
+        <div class="topbar-center">
+          <div class="model-badge">
+            <div class="model-dot"></div>
+            ScholarBot AI
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="profile-pill" id="profile-pill" style="display:none">
+            <span id="profile-pill-text">0/7 collected</span>
+          </div>
+          <button class="icon-action" onclick="startNewChat()" title="New chat">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+            </svg>
+          </button>
+          <button class="icon-action" id="account-btn" onclick="openAccountMenu(event)" title="Account">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="account-icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Messages -->
+      <div class="messages" id="messages">
+
+        <!-- Welcome -->
+        <div class="welcome" id="welcome">
+          <div class="welcome-icon">
+            <svg width="42" height="42" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h1>How can I help you?</h1>
+          <p>I'm ScholarBot — your AI guide to Indian scholarships. Chat naturally, I understand everything.</p>
+
+          <div class="suggestion-grid">
+            <button class="suggestion" onclick="injectMessage('Hi! Help me find scholarships')">
+              <span class="suggestion-icon">🎓</span>
+              <span>Find my scholarships</span>
+            </button>
+            <button class="suggestion" onclick="injectMessage('What documents do I need for scholarships?')">
+              <span class="suggestion-icon">📄</span>
+              <span>Documents required</span>
+            </button>
+            <button class="suggestion" onclick="injectMessage('Explain the NSP portal and how to apply')">
+              <span class="suggestion-icon">🌐</span>
+              <span>NSP portal guide</span>
+            </button>
+            <button class="suggestion" onclick="injectMessage('What scholarships exist for girls in engineering?')">
+              <span class="suggestion-icon">👩‍💻</span>
+              <span>Girls in engineering</span>
+            </button>
+            <button class="suggestion"
+              onclick="injectMessage('I am SC category student with 75% marks, income 2 lakh. What can I get?')">
+              <span class="suggestion-icon">⚡</span>
+              <span>Quick profile match</span>
+            </button>
+            <button class="suggestion" onclick="injectMessage('Scholarships list show chei (English/Telugu mixed)')">
+              <span class="suggestion-icon">🗣️</span>
+              <span>English & Telugu</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Progress bar (below messages, above input) -->
+      <div class="progress-bar-wrap" id="progress-bar-wrap" style="display:none">
+        <div class="progress-steps-row" id="progress-steps-row"></div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="input-area">
+        <div class="input-box">
+          <textarea id="input" placeholder="Message ScholarBot…" rows="1" onkeydown="onKey(event)"
+            oninput="grow(this)"></textarea>
+          <button class="send" id="send-btn" onclick="send()" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M22 2L11 13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M22 2L15 22 11 13 2 9l20-7z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+        <p class="input-note">ScholarBot uses AI — verify deadlines on official portals before applying.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Idle Animation Layer -->
+  <div class="nebula"></div>
+  <canvas id="warpCanvas"></canvas>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="modal-backdrop" style="display:none">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="auth-title">Login</h2>
+        <button class="icon-action" onclick="toggleAuthModal()" style="padding:4px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</button>
+        <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+      </div>
+      <div id="auth-error" style="color:var(--error);font-size:13px;margin-bottom:10px;display:none;"></div>
+      
+      <!-- Login Form -->
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <input type="email" id="login-email" class="modal-input" placeholder="Email" required>
+        <input type="password" id="login-password" class="modal-input" placeholder="Password" required>
+        <button type="submit" class="modal-btn">Log In</button>
+      </form>
+      
+      <!-- Signup Form -->
+      <form id="signup-form" onsubmit="handleSignup(event)" style="display:none">
+        <input type="text" id="signup-username" class="modal-input" placeholder="Username" required>
+        <input type="email" id="signup-email" class="modal-input" placeholder="Email" required>
+        <input type="password" id="signup-password" class="modal-input" placeholder="Password" required>
+        <button type="submit" class="modal-btn">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Account Dropdown Menu (hidden by default) -->
+  <div id="account-dropdown" class="account-dropdown" style="display:none">
+    <div class="dropdown-header">
+      <button class="dropdown-username-btn" onclick="openProfileDetails()" id="dropdown-username">User</button>
+      <div id="dropdown-role" style="font-size:11px;color:var(--text-3)">Standard User</div>
+    </div>
+    <div class="dropdown-actions">
+      <button id="admin-panel-btn" class="dropdown-btn" style="display:none" onclick="openAdminPanel()">🛡️ Admin Dashboard</button>
+      <button class="dropdown-btn" onclick="openProfileDetails()">👤 My Profile</button>
+      <button class="dropdown-btn" onclick="handleLogout()" style="color:var(--error)">Logout</button>
+    </div>
+  </div>
+
+  <!-- Admin Panel Modal -->
+  <div id="admin-modal" class="modal-backdrop" style="display:none">
+    <div class="modal admin-modal">
+      <div class="modal-header">
+        <h2>Admin Dashboard</h2>
+        <button class="icon-action" onclick="closeAdminPanel()" style="padding:4px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+      <div class="admin-content">
+        <h3>Add New Scholarship</h3>
+        <form id="add-scholarship-form" onsubmit="handleAddScholarship(event)" class="admin-add-form">
+          <input type="text" id="add-name" class="modal-input" placeholder="Scholarship Name" required>
+          <input type="text" id="add-provider" class="modal-input" placeholder="Provider" required>
+          <div style="display:flex;gap:10px;">
+             <input type="number" id="add-min_gpa" class="modal-input" placeholder="Min GPA (e.g 7.5)" step="0.1">
+             <input type="number" id="add-max_income" class="modal-input" placeholder="Max Income">
+          </div>
+          <input type="text" id="add-amount" class="modal-input" placeholder="Amount (e.g. ₹50,000/year)">
+          <input type="url" id="add-link" class="modal-input" placeholder="Apply Link URL">
+          <button type="submit" class="modal-btn">Add Scholarship</button>
+        </form>
+
+        <div id="edit-scholarship-form-wrap" style="display:none;border-top:1px solid var(--border);padding-top:18px;margin-top:4px;"></div>
+
+        <h3 style="margin-top:24px;margin-bottom:10px;">All Scholarships <span id="scholarship-count" style="font-size:12px;color:var(--text-3);"></span></h3>
+        <div id="admin-scholarship-list" class="admin-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Details Modal -->
+  <div id="profile-details-modal" class="modal-backdrop" style="display:none">
+    <div class="modal" style="max-width:380px;">
+      <div class="modal-header">
+        <h2>My Profile</h2>
+        <button class="icon-action" onclick="closeProfileDetails()" style="padding:4px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-3);margin-bottom:16px;">Details you've provided to ScholarBot. These are used to automatically find your scholarships in new chats.</p>
+      <div id="profile-details-body"></div>
+    </div>
+  </div>
+
+  <script src="/static/js/chat.js"></script>
+  <script src="/static/js/auth.js"></script>
+</body>
+
+</html>
