@@ -354,7 +354,7 @@ def auth_login():
 
 @app.route('/api/auth/logout', methods=['POST'])
 def auth_logout():
-    session.pop('user', None)
+    session.clear()
     return jsonify({'success': True})
 
 @app.route('/api/auth/me', methods=['GET'])
@@ -365,6 +365,18 @@ def auth_me():
     return jsonify({'user': None}), 401
 
 # ── ADMIN DASHBOARD ───────────────────────────────────────
+
+import scraper
+
+@app.route('/api/admin/scrape-scholarships', methods=['GET'])
+def api_admin_scrape():
+    if 'user' not in session or session['user'].get('role') != 'Admin':
+        return jsonify({"error": "Unauthorized"}), 403
+    try:
+        data = scraper.scrape_live_scholarships()
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/admin/scholarships', methods=['GET', 'POST'])
 def admin_scholarships():
@@ -394,6 +406,76 @@ def admin_manage_scholarship(sid):
         from database import update_scholarship_by_id
         update_scholarship_by_id(sid, request.json)
         return jsonify({'success': True})
+
+# ── APPLICATION TRACKER ───────────────────────────────────
+
+@app.route('/api/track', methods=['POST'])
+def api_track_scholarship():
+    user = session.get('user')
+    if not user:
+        return jsonify({"error": "Must be logged in to track scholarships"}), 401
+    
+    data = request.json or {}
+    scholarship_id = data.get('scholarship_id')
+    status = data.get('status', 'Saved')
+    
+    if not scholarship_id:
+        return jsonify({"error": "Missing scholarship_id"}), 400
+        
+    from database import track_scholarship
+    track_scholarship(user['id'], scholarship_id, status)
+    return jsonify({"success": True, "status": status})
+
+@app.route('/api/my-applications', methods=['GET'])
+def api_my_applications():
+    user = session.get('user')
+    if not user:
+        return jsonify({"error": "Unauthorized"}), 401
+        
+    from database import get_tracked_scholarships
+    apps = get_tracked_scholarships(user['id'])
+    return jsonify(apps)
+
+# ── NOTIFICATIONS ──────────────────────────────────────────
+
+@app.route('/api/notifications', methods=['GET'])
+def api_get_notifications():
+    user = session.get('user')
+    if not user:
+        return jsonify([])
+        
+    from database import get_notifications, get_tracked_scholarships, add_notification
+    import datetime
+    
+    # 1. AUTO-GENERATE DEADLINE ALERTS
+    apps = get_tracked_scholarships(user['id'])
+    for app in apps:
+        deadline_str = app.get('deadline')
+        if deadline_str:
+            try:
+                # Try to parse date (assuming format like '31 August 2026')
+                # For simplicity in this demo, we'll check if the string contains '2026'
+                # and use some basic logic. In a real app, we'd use dateutil.
+                if '2026' in deadline_str:
+                    msg = f"⏰ Deadline approaching for {app['name']}: {deadline_str}!"
+                    add_notification(user['id'], msg, 'deadline')
+            except: pass
+
+    # 2. AUTO-GENERATE NEW SCHOLARSHIP ALERTS
+    from database import get_all_scholarships_summary
+    all_sch = get_all_scholarships_summary()
+    if len(all_sch) > 15: # If more than baseline
+        add_notification(user['id'], "✨ New premium scholarships have been added! Check them out now.", 'new')
+
+    return jsonify(get_notifications(user['id']))
+
+@app.route('/api/notifications/read', methods=['POST'])
+def api_mark_notifications_read():
+    user = session.get('user')
+    if user:
+        from database import mark_notifications_read
+        mark_notifications_read(user['id'])
+    return jsonify({'success': True})
 
 # ══════════════════════════════════════════════════════
 #  STARTUP

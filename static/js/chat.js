@@ -16,12 +16,20 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('input').addEventListener('input', onInputChange);
   document.getElementById('input').focus();
 
+  // Success Stardust Global Trigger
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.btn-premium') || e.target.closest('.sch-apply')) {
+      triggerStardust(e.clientX, e.clientY);
+    }
+  });
+
   // Hide splash screen after premium animation completes (about 2.8s)
   setTimeout(() => {
     const splash = document.getElementById('splash-screen');
     if (splash) {
       splash.classList.add('fade-out');
-      setTimeout(() => splash.remove(), 900); // 0.9s is the transform duration
+      document.querySelector('.layout').classList.add('reveal');
+      setTimeout(() => splash.remove(), 1300);
     }
   }, 2800);
 
@@ -192,22 +200,22 @@ async function startNewChat() {
       <h1>How can I help you?</h1>
       <p>I'm ScholarBot — your AI guide to Indian scholarships. Chat naturally, I understand everything.</p>
       <div class="suggestion-grid">
-        <button class="suggestion" onclick="injectMessage('Hi! Help me find scholarships')">
+        <button class="suggestion btn-premium" onclick="injectMessage('Hi! Help me find scholarships')">
           <span class="suggestion-icon">🎓</span><span>Find my scholarships</span>
         </button>
-        <button class="suggestion" onclick="injectMessage('What documents do I need for scholarships?')">
+        <button class="suggestion btn-premium" onclick="injectMessage('What documents do I need for scholarships?')">
           <span class="suggestion-icon">📄</span><span>Documents required</span>
         </button>
-        <button class="suggestion" onclick="injectMessage('Explain the NSP portal and how to apply')">
+        <button class="suggestion btn-premium" onclick="injectMessage('Explain the NSP portal and how to apply')">
           <span class="suggestion-icon">🌐</span><span>NSP portal guide</span>
         </button>
-        <button class="suggestion" onclick="injectMessage('What scholarships exist for girls in engineering?')">
+        <button class="suggestion btn-premium" onclick="injectMessage('What scholarships exist for girls in engineering?')">
           <span class="suggestion-icon">👩‍💻</span><span>Girls in engineering</span>
         </button>
-        <button class="suggestion" onclick="injectMessage('I am SC category student with 75% marks, income 2 lakh. What can I get?')">
+        <button class="suggestion btn-premium" onclick="injectMessage('I am SC category student with 75% marks, income 2 lakh. What can I get?')">
           <span class="suggestion-icon">⚡</span><span>Quick profile match</span>
         </button>
-        <button class="suggestion" onclick="injectMessage('Scholarships list show chei (English/Telugu mixed)')">
+        <button class="suggestion btn-premium" onclick="injectMessage('Scholarships list show chei (English/Telugu mixed)')">
           <span class="suggestion-icon">🗣️</span><span>English & Telugu</span>
         </button>
       </div>
@@ -282,28 +290,28 @@ function appendScholarships(list) {
     card.className = 'sch-card';
     card.style.animationDelay = `${i * 0.07}s`;
 
-    const tags = (s.reasons || []).map(r =>
-      `<span class="sch-tag">${escHtml(r)}</span>`
-    ).join('');
+    const tags = (s.reasons || []).map((r, ri) => {
+      const cls = (r.includes('%') || r.toLowerCase().includes('match')) ? 'match-scan' : 'sch-tag';
+      return `<span class="${cls}">${escHtml(r)}</span>`;
+    }).join('');
 
     card.innerHTML = `
       <div class="sch-card-head">
         <div class="sch-icon">🏆</div>
-        <div class="sch-head-info">
+        <div class="sch-info">
           <div class="sch-name">${escHtml(s.name)}</div>
           <div class="sch-provider">${escHtml(s.provider)}</div>
         </div>
-        <div class="sch-amount">${escHtml(s.amount)}</div>
       </div>
-      ${tags ? `<div class="sch-tags">${tags}</div>` : ''}
-      <div class="sch-meta">
-        <div class="sch-meta-row">📅 <span>Deadline:</span> <span class="sch-meta-val">${escHtml(s.deadline || 'Check website')}</span></div>
-        <div class="sch-meta-row">📄 <span>Documents:</span> <span class="sch-meta-val" style="font-size:11.5px">${escHtml(s.documents_required || 'See official website')}</span></div>
+      <div class="sch-body">
+        <div class="sch-amount">${escHtml(s.amount || 'Varies')}</div>
+        <div class="sch-deadline">Deadline: ${escHtml(s.deadline || 'Ongoing')}</div>
       </div>
-      <a class="sch-apply" href="${escHtml(s.link)}" target="_blank" rel="noopener noreferrer">
-        Apply Now
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>`;
+      <div class="sch-tags">${tags}</div>
+      <div class="sch-actions">
+        <a href="${s.link}" target="_blank" class="sch-apply">Apply Now</a>
+        <button onclick="trackScholarship(${s.id})" class="sch-track-btn">📌 Track</button>
+      </div>`;
     grid.appendChild(card);
   });
 
@@ -374,11 +382,11 @@ function renderMd(text) {
 
 // ─── Chat History ──────────────────────────────────────────
 function getThreadKey() {
-  return window.currentUser ? 'chatThreads_' + window.currentUser.id : 'chatThreads_guest';
+  return window.currentUser ? 'chatThreads_' + window.currentUser.email : 'chatThreads_guest';
 }
 
 function getSavedProfileKey() {
-  return window.currentUser ? 'savedProfile_' + window.currentUser.id : 'savedProfile_guest';
+  return window.currentUser ? 'savedProfile_' + window.currentUser.email : 'savedProfile_guest';
 }
 
 function getSavedProfile() {
@@ -515,13 +523,13 @@ window.loadThread = async function (id) {
 // ─── Hyper-Space Idle Animation ─────────────────────────────
 
 let idleTimer;
-const IDLE_TIME = 15000; // 15 seconds
+const IDLE_TIME = 120000; // 2 mins
 
-window.resetIdleTimer = function() {
+window.resetIdleTimer = function () {
   clearTimeout(idleTimer);
   const layout = document.querySelector('.layout');
   if (layout) layout.classList.remove('is-idle');
-  
+
   idleTimer = setTimeout(() => {
     if (layout) layout.classList.add('is-idle');
   }, IDLE_TIME);
@@ -532,7 +540,7 @@ window.resetIdleTimer = function() {
   window.addEventListener(evt, resetIdleTimer);
 });
 
-window.initWarpDrive = function() {
+window.initWarpDrive = function () {
   const canvas = document.getElementById('warpCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -590,4 +598,71 @@ window.initWarpDrive = function() {
   }
 
   draw();
+};
+
+
+// ─── Voice Input ───────────────────────────────────────
+let recognition = null;
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = 'en-IN'; // Optimized for Indian English/Hinglish
+
+  recognition.onstart = () => {
+    document.getElementById('voice-btn').classList.add('recording');
+  };
+
+  recognition.onend = () => {
+    document.getElementById('voice-btn').classList.remove('recording');
+  };
+
+  recognition.onresult = (event) => {
+    const text = event.results[0][0].transcript;
+    const input = document.getElementById('input');
+    input.value = text;
+    grow(input);
+    document.getElementById('send-btn').disabled = false;
+    send();
+  };
+
+  recognition.onerror = (event) => {
+    console.error('Speech recognition error:', event.error);
+    document.getElementById('voice-btn').classList.remove('recording');
+  };
+}
+
+window.toggleVoiceInput = function () {
+  if (!recognition) {
+    alert('Voice Input is not supported by your browser.');
+    return;
+  }
+  try {
+    recognition.start();
+  } catch (e) {
+    recognition.stop();
+  }
+};
+
+window.trackScholarship = async function (id) {
+  if (!window.currentUser) {
+    alert('Please login to track your scholarships!');
+    toggleAuthModal();
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ scholarship_id: id, status: 'Saved' })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert('📌 Scholarship added to your dashboard!');
+    }
+  } catch (err) {
+    console.error(err);
+  }
 };

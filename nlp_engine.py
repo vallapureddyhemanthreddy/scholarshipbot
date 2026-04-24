@@ -242,12 +242,12 @@ CATEGORY_MAP = {
     r'\b(sc|s\.c|scheduled\s*caste|dalit|harijan)\b': 'SC',
     # ST
     r'\b(st|s\.t|scheduled\s*tribe|tribal|adivasi|aadivasi)\b': 'ST',
-    # OBC
-    r'\b(obc|o\.b\.c|other backward|backward class|obc-ncl|obc ncl)\b': 'OBC',
+    # OBC / BC
+    r'\b(obc|o\.b\.c|bc|b\.c|backward class|other backward|obc-ncl|obc ncl|kapu|yadav|goud)\b': 'OBC',
     # EWS
-    r'\b(ews|e\.w\.s|economically weaker|weaker section)\b': 'EWS',
+    r'\b(ews|e\.w\.s|economically weaker|weaker section|oc|forward caste|fc)\b': 'EWS',
     # General
-    r'\b(general|gen|open|unreserved|forward caste|fc|no reservation|open category)\b': 'General',
+    r'\b(general|gen|open|unreserved|no reservation|open category)\b': 'General',
 }
 
 def extract_category(text: str):
@@ -259,8 +259,8 @@ def extract_category(text: str):
 
 
 GENDER_MAP = {
-    r'\b(female|woman|women|girl|lady|ladies|ammayi|ammayi|stree|f)\b': 'Female',
-    r'\b(male|man|men|boy|gents|abbayi|abbai|purushudu|m)\b': 'Male',
+    r'\b(female|woman|women|girl|lady|ladies|ammayi|amayi|stree|adavadi|aadadi|f)\b': 'Female',
+    r'\b(male|man|men|boy|gents|abbayi|abbai|purushudu|magavadu|m)\b': 'Male',
     r'\b(other|non.?binary|transgender|third gender|lgbtq|prefer not)\b': 'Other',
 }
 
@@ -343,9 +343,9 @@ def extract_state(text: str):
 
 COURSES = {
     r'\b(b\.?tech|btech|btch|b\.?t|b\.?e\.?|be\b|bachelor of (technology|engineering))\b': 'B.Tech',
-    r'\b(mbbs|bachelor of medicine|medical|medicine)\b': 'MBBS',
+    r'\b(mbbs|bachelor of medicine|medical|medicine|doctor)\b': 'MBBS',
     r'\b(bds|dental)\b': 'BDS',
-    r'\b(b\.?sc\.?|bsc|b\s*sc|bachelor of science)\b': 'B.Sc',
+    r'\b(b\.?sc\.?|bsc|b\s*sc|bachelor of science|degree)\b': 'B.Sc',
     r'\b(b\.?com\.?|bcom|b\s*com|bachelor of commerce)\b': 'B.Com',
     r'\b(b\.?a\.?|ba\b|b\s*a|bachelor of arts|humanities)\b': 'BA',
     r'\b(bca|b\s*ca|bachelor of computer application)\b': 'BCA',
@@ -354,14 +354,15 @@ COURSES = {
     r'\b(mba|m\s*ba|master of business)\b': 'MBA',
     r'\b(m\.?sc\.?|msc|m\s*sc|master of science)\b': 'M.Sc',
     r'\b(phd|ph\.?d|doctorate|research degree)\b': 'PhD',
-    r'\b(llb|l\.?l\.?b|law degree|bachelor of law)\b': 'LLB',
-    r'\b(diploma|polytechnic|poly)\b': 'Diploma',
-    r'\b(nursing|b\.?sc nursing|gnm)\b': 'B.Sc Nursing',
-    r'\b(pharmacy|b\.?pharm|d\.?pharm)\b': 'B.Pharm',
-    r'\b(architecture|b\.?arch)\b': 'B.Arch',
+    r'\b(llb|l\.?l\.?b|law degree|bachelor of law|lawyer)\b': 'LLB',
+    r'\b(diploma|polytechnic|poly|iti)\b': 'Diploma',
+    r'\b(nursing|b\.?sc nursing|gnm|b\s*sc nursing)\b': 'B.Sc Nursing',
+    r'\b(pharmacy|b\.?pharm|d\.?pharm|bpharm)\b': 'B.Pharm',
+    r'\b(architecture|b\.?arch|barch)\b': 'B.Arch',
     r'\b(mass comm|journalism|bmc|bmm)\b': 'Mass Communication',
     r'\b(hotel management|bhmct|hospitality)\b': 'Hotel Management',
-    r'\b(agriculture|b\.?sc agri)\b': 'B.Sc Agriculture',
+    r'\b(agriculture|b\.?sc agri|bsc agri)\b': 'B.Sc Agriculture',
+    r'\b(inter|intermediate|11th|12th|plus two|\+2|puc)\b': 'Intermediate',
 }
 
 def extract_course(text: str):
@@ -449,33 +450,33 @@ def detect_correction(text: str, expected_field: str = None) -> dict:
 # ══════════════════════════════════════════════════════
 
 QUESTIONS = {
-    'gpa':      "📚 What's your **GPA or percentage**?\n*(e.g., 8.5 CGPA, 75%, or '85 marks vachayi')*",
-    'income':   "💰 What's your **family's annual income**?\n*(e.g., 3 lakh, 2.5L, 30k/month, or BPL card)*",
-    'category': "📋 What's your **reservation category**?\n*(General / OBC / SC / ST / EWS)*",
-    'gender':   "👤 What's your **gender**?\n*(Male / Female / Other)*",
-    'state':    "🗺️ Which **state** are you from?\n*(e.g., Telangana, Andhra Pradesh, Maharashtra — or your city name works too!)*",
-    'course':   "🎓 What **course** are you currently pursuing?\n*(e.g., B.Tech, MBBS, B.Sc, Diploma — type 'skip' if not sure)*",
-    'year':     "📅 Which **year of study** are you in?\n*(1st year / 2nd year / final year / fresher)*",
+    'gpa':      "Let's start with your academics. 📚 What's your **GPA or percentage**?\n*(e.g., '8.5 CGPA', '75%', or '85 marks vachayi')*",
+    'income':   "Got it. 💰 To find the right financial schemes, what is your **family's annual income**?\n*(e.g., '3 lakh', '2.5L', or '30k per month')*",
+    'category': "Understood. 📋 Do you belong to a specific **reservation category**?\n*(General / OBC / SC / ST / EWS)*",
+    'gender':   "Thanks! 👤 Could you specify your **gender**?\n*(Male / Female / Other)*",
+    'state':    "🗺️ Which **state** do you currently reside in?\n*(e.g., Telangana, Andhra Pradesh, Maharashtra — city names work too!)*",
+    'course':   "Almost done. 🎓 What **course or degree** are you currently pursuing?\n*(e.g., B.Tech, MBBS, B.Sc, Diploma — type 'skip' if unsure)*",
+    'year':     "Last question! 📅 Which **year of study** are you currently in?\n*(e.g., 1st year, 2nd year, final year, or fresher)*",
 }
 
 CONFIRMATIONS = {
-    'gpa':      lambda v: f"✅ Got it — **{v}/10 GPA**",
-    'income':   lambda v: f"✅ Family income: **₹{v/100000:.1f}L/year**",
-    'category': lambda v: f"✅ Category: **{v}**",
-    'gender':   lambda v: f"✅ Gender: **{v}**",
-    'state':    lambda v: f"✅ State: **{v}**",
-    'course':   lambda v: f"✅ Course: **{v}**",
-    'year':     lambda v: f"✅ Year: **Year {int(v)}**",
+    'gpa':      lambda v: f"✨ Noted your academic score: **{v}/10 GPA**",
+    'income':   lambda v: f"✨ Recorded family income: **₹{v/100000:.1f}L/year**",
+    'category': lambda v: f"✨ Category set to: **{v}**",
+    'gender':   lambda v: f"✨ Gender noted: **{v}**",
+    'state':    lambda v: f"✨ Location updated: **{v}**",
+    'course':   lambda v: f"✨ Course tracked: **{v}**",
+    'year':     lambda v: f"✨ Study year: **Year {int(v)}**",
 }
 
 HINTS = {
-    'gpa':      "I couldn't read your marks. Try: **8.5**, **75%**, or **9 CGPA**",
-    'income':   "Try: **3 lakh**, **2.5L**, **30,000/month**, or **BPL**",
-    'category': "Please type: **General**, **BC**, **SC**, **ST**, or **EWS**",
-    'gender':   "Please type: **Male**, **Female**, or **Other**",
-    'state':    "Please type your state name, e.g., **Telangana**, **Tamil Nadu**, **Delhi**",
-    'course':   "Please type your course, e.g., **B.Tech**, **MBBS**, **BA**. Or type **skip**.",
-    'year':     "Please type your year: **1st**, **2nd**, **3rd**, **4th**, or **final year**",
+    'gpa':      "I didn't quite catch that. Could you provide your marks like **8.5**, **75%**, or **9 CGPA**?",
+    'income':   "I missed the income amount. You can say things like **3 lakh**, **2.5L**, or **30,000/month**.",
+    'category': "Just to be precise, please type: **General**, **OBC**, **SC**, **ST**, or **EWS**.",
+    'gender':   "Could you clarify your gender? Please type: **Male**, **Female**, or **Other**.",
+    'state':    "I need your state to find local schemes. E.g., **Telangana**, **Tamil Nadu**, or **Delhi**.",
+    'course':   "What are you studying? E.g., **B.Tech**, **MBBS**, **BA**. (Type **skip** if you want to skip this).",
+    'year':     "Which year are you in? Try answering with **1st**, **2nd**, **3rd**, **4th**, or **final year**.",
 }
 
 # ══════════════════════════════════════════════════════
