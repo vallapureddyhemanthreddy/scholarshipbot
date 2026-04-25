@@ -581,7 +581,6 @@ def match_scholarships(user_profile):
             
             score = min(98, score) # Cap at 98%
             
-            reasons.insert(0, f"🔥 {score}% Match Strength")
 
             matches.append({
                 'id': s['id'],
@@ -662,6 +661,13 @@ def track_scholarship(user_id, scholarship_id, status='Saved'):
     else:
         c.execute("INSERT INTO user_applications (user_id, scholarship_id, status) VALUES (?, ?, ?)", 
                   (user_id, scholarship_id, status))
+    conn.commit()
+    conn.close()
+
+def untrack_scholarship(user_id, scholarship_id):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("DELETE FROM user_applications WHERE user_id=? AND scholarship_id=?", (user_id, scholarship_id))
     conn.commit()
     conn.close()
 

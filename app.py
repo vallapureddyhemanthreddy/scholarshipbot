@@ -436,6 +436,22 @@ def api_my_applications():
     apps = get_tracked_scholarships(user['id'])
     return jsonify(apps)
 
+@app.route('/api/untrack', methods=['POST'])
+def api_untrack_scholarship():
+    user = session.get('user')
+    if not user:
+        return jsonify({"error": "Unauthorized"}), 401
+    
+    data = request.json or {}
+    scholarship_id = data.get('scholarship_id')
+    
+    if not scholarship_id:
+        return jsonify({"error": "Missing scholarship_id"}), 400
+        
+    from database import untrack_scholarship
+    untrack_scholarship(user['id'], scholarship_id)
+    return jsonify({"success": True})
+
 # ── NOTIFICATIONS ──────────────────────────────────────────
 
 @app.route('/api/notifications', methods=['GET'])

@@ -466,6 +466,7 @@ async function loadTrackerScholarships() {
             <option value="Rejected" ${s.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
           </select>
           <a href="${s.link}" target="_blank" class="modal-btn" style="padding:6px 12px;font-size:12px;width:auto;">Apply</a>
+          <button class="modal-btn delete-btn" onclick="untrackScholarship(${s.id})" style="padding:6px 12px;font-size:12px;width:auto;background:rgba(239, 68, 68, 0.1);color:#ef4444;border-color:rgba(239, 68, 68, 0.2);">Remove</button>
         </div>
       </div>
     `).join('');
@@ -490,6 +491,23 @@ window.updateTrackStatus = async function(trackId, status) {
     const data = await res.json();
     if (data.success) {
       loadTrackerScholarships(); // Refresh
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+window.untrackScholarship = async function(id) {
+  if (!confirm('Remove this scholarship from your dashboard?')) return;
+  try {
+    const res = await fetch('/api/untrack', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ scholarship_id: id })
+    });
+    const data = await res.json();
+    if (data.success) {
+      loadTrackerScholarships();
     }
   } catch (err) {
     console.error(err);

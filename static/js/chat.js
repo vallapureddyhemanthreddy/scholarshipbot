@@ -308,6 +308,10 @@ function appendScholarships(list) {
         <div class="sch-deadline">Deadline: ${escHtml(s.deadline || 'Ongoing')}</div>
       </div>
       <div class="sch-tags">${tags}</div>
+      <div class="sch-docs">
+        <strong>📄 Required Documents:</strong>
+        ${escHtml(s.documents_required || 'Refer to website')}
+      </div>
       <div class="sch-actions">
         <a href="${s.link}" target="_blank" class="sch-apply">Apply Now</a>
         <button onclick="trackScholarship(${s.id})" class="sch-track-btn">📌 Track</button>
