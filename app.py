@@ -205,6 +205,15 @@ def chat():
                 'step': step_idx + 1, 'total_steps': 7,
                 'collected_fields': list(profile.keys())
             })
+        else:
+            session['results_shown'] = True
+            reply, scholarships = build_results(profile)
+            return jsonify({
+                'reply': f"✏️ Updated {corrected}!\n\n" + reply,
+                'scholarships': scholarships,
+                'show_results': True, 'step': 7, 'total_steps': 7,
+                'collected_fields': list(profile.keys())
+            })
 
     # ── MULTI-FIELD EXTRACTION ────────────────────────
     extracted = extract_all_fields(msg, expected_field=expected_field)
@@ -221,7 +230,7 @@ def chat():
         confirm_str = " • ".join(confirms) if confirms else ""
 
         # Check if now complete
-        if all_done(profile) and not results_shown:
+        if all_done(profile):
             session['results_shown'] = True
             reply, scholarships = build_results(profile)
             if confirm_str:
