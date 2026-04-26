@@ -185,7 +185,7 @@ def init_db():
                 6.0, 600000, "All", "All", "All",
                 "15 July 2026",
                 "Up to ₹2,00,000/year (Covers full tuition)",
-                "https://www.samsung.com/in/microsite/sapne-hue-bade/star-scholar/",
+                "https://images.samsung.com/is/content/samsung/p5/in/microsite/sapne-hue-bade/stories/Scholarship-New-Form.pdf",
                 "Exclusive scholarship for students graduating from Jawahar Navodaya Vidyalaya (JNV) schools, currently pursuing B.Tech/Dual Degree at NITs/IITs.",
                 "JNV Certificate, JEE Advanced/Main Rank Card, Income Certificate",
                 "B.Tech", 1, 4
