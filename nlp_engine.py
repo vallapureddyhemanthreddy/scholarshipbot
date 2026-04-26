@@ -530,7 +530,6 @@ FAQ = {
 • **EWS (general definition):** ₹8 lakh/year
 • **Central Sector Scholarship:** ₹8 lakh/year
 • **AICTE Pragati (Girls):** ₹8 lakh/year
-• **Maulana Azad Fellowship:** ₹6 lakh/year
 • **State scholarships:** Vary — usually ₹1L–₹3.5L/year
 • **Corporate scholarships:** Often ₹2.5L–₹6L/year
 

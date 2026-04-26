@@ -465,7 +465,7 @@ async function loadTrackerScholarships() {
             <option value="Awarded" ${s.status === 'Awarded' ? 'selected' : ''}>Awarded</option>
             <option value="Rejected" ${s.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
           </select>
-          <a href="${s.link}" target="_blank" class="modal-btn" style="padding:6px 12px;font-size:12px;width:auto;">Apply</a>
+          ${s.status === 'Saved' ? `<a href="${s.link}" target="_blank" class="modal-btn" style="padding:6px 12px;font-size:12px;width:auto;">Apply</a>` : ''}
           <button class="modal-btn delete-btn" onclick="untrackScholarship(${s.id})" style="padding:6px 12px;font-size:12px;width:auto;background:rgba(239, 68, 68, 0.1);color:#ef4444;border-color:rgba(239, 68, 68, 0.2);">Remove</button>
         </div>
       </div>

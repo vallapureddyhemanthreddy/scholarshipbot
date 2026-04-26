@@ -59,23 +59,12 @@ def init_db():
                 "All", 1, 5
             ),
             (
-                "Begum Hazrat Mahal National Scholarship",
-                "Maulana Azad Education Foundation",
-                5.0, 200000, "All", "Female", "All",
-                "30 September 2026",
-                "₹5,000 - ₹6,000/year",
-                "https://maef.net.in",
-                "For meritorious girls from minority communities (Muslim, Christian, Sikh, Buddhist, Zoroastrian, Jain) studying in Class IX to XII and beyond.",
-                "Minority Community Certificate, Income Certificate, Mark Sheets, Aadhaar, Bank Account",
-                "All", 1, 4
-            ),
-            (
                 "AICTE Pragati Scholarship for Girls",
                 "All India Council for Technical Education (AICTE)",
                 0.0, 800000, "All", "Female", "All",
                 "31 October 2026",
                 "₹50,000/year",
-                "https://www.aicte-india.org/bureaus/bs/pragati",
+                "https://www.aicte.gov.in/schemes/students-development-schemes/Pragati/General-Instructions",
                 "For girl students pursuing technical education (degree/diploma). One scholarship per family. Covers tuition fee and incidentals.",
                 "Aadhaar, Income Certificate, Fee Receipt, Bank Passbook, Enrollment Proof",
                 "B.Tech", 1, 4
@@ -89,17 +78,6 @@ def init_db():
                 "https://tribal.nic.in",
                 "Scholarship for Scheduled Tribe students who have passed class XII and seeking admission in graduation/post-graduation in recognized institutions.",
                 "ST Certificate, Income Certificate, Aadhaar, Class XII Marksheet, Bank Passbook",
-                "All", 1, 5
-            ),
-            (
-                "Prime Minister's Scholarship Scheme (PMSS)",
-                "Ministry of Home Affairs",
-                6.0, 999999, "All", "All", "All",
-                "31 October 2026",
-                "₹2,500 - ₹3,000/month",
-                "https://ksb.gov.in/pmss.htm",
-                "For wards and widows of Ex-Servicemen/Ex-Coast Guard personnel. Applicable for professional degree courses like B.Tech, MBBS, BDS, BCA, MBA.",
-                "Ex-Serviceman Certificate, Mark Sheets, Income Certificate, Bank Passbook, Aadhaar",
                 "All", 1, 5
             ),
             (
@@ -136,23 +114,12 @@ def init_db():
                 "All", 1, 5
             ),
             (
-                "Ishan Uday Special Scholarship for North East",
-                "University Grants Commission (UGC)",
-                7.5, 450000, "All", "All", "North East",
-                "30 September 2026",
-                "₹5,400 - ₹7,800/month",
-                "https://ishan.ugc.ac.in",
-                "For students domiciled in North Eastern states pursuing general degree courses, technical and professional courses from recognized institutions.",
-                "Domicile Certificate of NE State, Income Certificate, Mark Sheets, Aadhaar",
-                "All", 1, 4
-            ),
-            (
                 "Reliance Foundation Undergraduate Scholarships",
                 "Reliance Foundation",
                 7.5, 300000, "All", "All", "All",
                 "30 November 2026",
                 "₹2,00,000 over 4 years",
-                "https://www.reliancefoundation.org/scholarships",
+                "https://www.scholarships.reliancefoundation.org/UG_Scholarship.aspx",
                 "For meritorious students from low-income families pursuing UG courses in STEM or Arts/Humanities. Includes academic excellence and leadership modules.",
                 "Income Certificate, Mark Sheets, Aadhaar, Enrollment Letter, Bank Account",
                 "All", 1, 1
@@ -169,83 +136,6 @@ def init_db():
                 "All", 1, 4
             ),
             (
-                "Tata Capital Pankh Scholarship",
-                "Tata Capital",
-                6.0, 250000, "All", "All", "All",
-                "15 October 2026",
-                "Up to ₹50,000/year",
-                "https://www.buddy4study.com/page/tata-capital-pankh-scholarship-programme",
-                "Supporting meritorious students from financially weaker sections to pursue professional courses. Available for both UG and diploma students.",
-                "Income Certificate, Mark Sheets, Aadhaar, College ID, Bank Passbook",
-                "All", 1, 4
-            ),
-            (
-                "Maulana Azad National Fellowship",
-                "Ministry of Minority Affairs",
-                0.0, 600000, "All", "All", "All",
-                "31 December 2026",
-                "₹25,000 - ₹28,000/month (PhD) + contingency grant",
-                "https://maef.net.in",
-                "For minority community students (Muslim, Christian, Buddhist, Sikh, Zoroastrian, Jain) pursuing M.Phil and PhD in Indian universities.",
-                "Minority Certificate, Aadhaar, NET/JRF Score, Bank Account, Enrollment Letter",
-                "PhD", 1, 5
-            ),
-            (
-                "Sitaram Jindal Foundation Scholarship",
-                "Sitaram Jindal Foundation",
-                6.5, 400000, "All", "All", "All",
-                "31 December 2026",
-                "₹500 - ₹2,500/month",
-                "https://www.sitaramjindalfoundation.org/scholarships-for-students-in-bangalore-india.php",
-                "For students pursuing higher education in various fields. Merit-cum-means scholarship for UG/PG students.",
-                "Income Certificate, Mark Sheets, Aadhaar, Bank Account, Fee Receipt",
-                "All", 1, 4
-            ),
-            (
-                "Buddy4Study - HDFC Bank Parivartan",
-                "HDFC Bank & Buddy4Study",
-                6.0, 250000, "All", "All", "All",
-                "30 September 2026",
-                "Up to ₹75,000",
-                "https://www.buddy4study.com",
-                "Part of HDFC Bank's CSR initiative to support students from underprivileged backgrounds.",
-                "Income Certificate, Mark Sheets, Aadhaar, Proof of Admission",
-                "All", 1, 3
-            ),
-            (
-                "L'Oréal India For Young Women In Science Scholarship",
-                "L'Oréal India",
-                8.5, 600000, "All", "Female", "All",
-                "15 October 2026",
-                "₹2,50,000 for graduation",
-                "https://www.for-young-women-in-science.co.in",
-                "To support young women who want to pursue higher education in any scientific field.",
-                "12th Marksheet, Income Certificate, Age Proof, Admission Letter",
-                "B.Sc", 1, 1
-            ),
-            (
-                "LIC HFL Vidyadhan Scholarship",
-                "LIC Housing Finance Limited",
-                6.0, 360000, "All", "All", "All",
-                "30 September 2026",
-                "₹10,000 - ₹20,000/year",
-                "https://www.lichousing.com",
-                "For students from Class 10 to PG level. Priority given to students who lost breadwinners.",
-                "Income Certificate, Mark Sheets, Aadhaar, Bank Account",
-                "All", 1, 3
-            ),
-            (
-                "Adobe Women-in-Technology Scholarship",
-                "Adobe India",
-                8.0, 9999999, "All", "Female", "All",
-                "30 November 2026",
-                "Tuition fee + Internship opportunity",
-                "https://www.adobe.com/in/university-relations/scholarship.html",
-                "To recognize outstanding female students in the field of Computer Science/Engineering.",
-                "Resume, Transcripts, Recommendation Letters, Essay",
-                "B.Tech", 2, 4
-            ),
-            (
                 "Google Generation Scholarship (Asia Pacific)",
                 "Google",
                 8.5, 9999999, "All", "Female", "All",
@@ -257,17 +147,6 @@ def init_db():
                 "B.Tech", 1, 2
             ),
             (
-                "Kotak Kanya Scholarship",
-                "Kotak Education Foundation",
-                7.5, 320000, "All", "Female", "All",
-                "30 September 2026",
-                "₹1,50,000/year",
-                "https://kotakeducation.org/kotak-kanya-scholarship/",
-                "Support meritorious girl students from underprivileged families for professional graduation.",
-                "Income Certificate, Mark Sheets, Fee Receipt, IT Return/Form 16",
-                "B.Tech", 1, 1
-            ),
-            (
                 "NSP Pre-Matric Scholarship for Minorities",
                 "Ministry of Minority Affairs",
                 5.0, 100000, "All", "All", "All",
@@ -277,17 +156,6 @@ def init_db():
                 "For students from minority communities (Muslim, Christian, Sikh, etc.) studying in Class 1 to 10.",
                 "Minority Certificate, Income Certificate, Marksheet, Aadhaar",
                 "All", 1, 1
-            ),
-            (
-                "Tata Trust Medical and Healthcare Scholarships",
-                "Tata Trusts",
-                6.5, 500000, "All", "All", "All",
-                "November 2026",
-                "Covers tuition fees",
-                "https://www.tatatrusts.org",
-                "For students pursuing undergraduate or postgraduate medical/healthcare courses.",
-                "Marksheets, Fee Receipt, Income Proof, Aadhaar",
-                "MBBS", 1, 5
             ),
             (
                 "ONGC Scholarship for SC/ST Students",
@@ -334,28 +202,6 @@ def init_db():
                 "B.Tech", 1, 1
             ),
             (
-                "RRD 'We Care' Scholarship for Engineering",
-                "RR Donnelley",
-                6.5, 500000, "All", "All", "All",
-                "15 June 2026",
-                "₹50,000/year",
-                "https://www.buddy4study.com/page/rrd-we-care-scholarship",
-                "CSR initiative to support students pursuing B.E./B.Tech courses, specifically targeting those from marginalized backgrounds to complete their degree.",
-                "Admission Letter, Income Proof, Aadhaar, Bank Details",
-                "B.Tech", 1, 4
-            ),
-            (
-                "Foundation For Excellence (FFE) Scholarship",
-                "FFE India Trust",
-                7.0, 300000, "All", "All", "All",
-                "31 August 2026",
-                "₹40,000/year",
-                "https://ffe.org/apply/",
-                "Awarded to academically gifted but financially constrained students enrolled in 1st year B.Tech/B.E/MBBS. Requires excellent entrance exam ranks.",
-                "Rank Card (State/National), Income Certificate, 12th Marksheet",
-                "B.Tech", 1, 1
-            ),
-            (
                 "Santoor Women's Scholarship",
                 "Wipro Cares",
                 6.0, 9999999, "All", "Female", "Andhra Pradesh",
@@ -375,17 +221,6 @@ def init_db():
                 "https://www.buddy4study.com/page/nikon-scholarship-program",
                 "Aimed at empowering students pursuing photography-related courses or professional degree courses including B.Tech. Strong preference for technical innovation.",
                 "Class 12 Marksheet, Income Certificate, ID Proof",
-                "B.Tech", 1, 4
-            ),
-            (
-                "Legrand Empowering Scholarship Program",
-                "Legrand",
-                7.0, 500000, "All", "Female", "All",
-                "15 July 2026",
-                "60% of tuition fee or ₹60,000/year",
-                "https://www.legrand.co.in/empowering-scholarship",
-                "Designed for meritorious girl students, specially-abled students, and transgender students pursuing B.Tech, B.Arch, or other technical degrees.",
-                "Income Certificate, Class 10/12 Marksheets, College Fee Receipt",
                 "B.Tech", 1, 4
             ),
             (
