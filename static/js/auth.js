@@ -52,6 +52,11 @@ function updateAuthUI() {
 
 window.openAccountMenu = function(e) {
   if (e) e.stopPropagation();
+  
+  // Close notifications if open
+  const nd = document.getElementById('notif-dropdown');
+  if (nd) nd.style.display = 'none';
+
   if (window.currentUser) {
     const dropdown = document.getElementById('account-dropdown');
     const isOpen = dropdown.style.display === 'block';
@@ -199,6 +204,8 @@ async function loadAdminScholarships() {
     const res = await fetch('/api/admin/scholarships');
     const records = await res.json();
     const list = document.getElementById('admin-scholarship-list');
+    const countEl = document.getElementById('scholarship-count');
+    if (countEl) countEl.innerText = `(${records.length} total)`;
 
     if (!Array.isArray(records) || records.length === 0) {
       list.innerHTML = '<div style="color:var(--text-3);padding:12px;">No scholarships found.</div>';
@@ -517,6 +524,11 @@ window.untrackScholarship = async function(id) {
 // ─── NOTIFICATIONS ─────────────────────────────────────────────
 window.toggleNotifMenu = function(e) {
   if (e) e.stopPropagation();
+  
+  // Close account dropdown if open
+  const ad = document.getElementById('account-dropdown');
+  if (ad) ad.style.display = 'none';
+
   const nd = document.getElementById('notif-dropdown');
   const isOpen = nd.style.display === 'block';
   

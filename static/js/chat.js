@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════
-//  ScholarBot — Claude-powered Chat Engine
+//  ScholarBot — Powered Chat Engine
 // ═══════════════════════════════════════════════════
 
 const STEPS = ['gpa', 'income', 'category', 'gender', 'state', 'course', 'year'];
@@ -73,7 +73,7 @@ function toggleTheme() {
 }
 
 // ─── Sidebar ────────────────────────────────────────────
-// Sidebar is now permanently visible. Toggle functions removed.
+
 
 
 // ─── Send ────────────────────────────────────────────
@@ -527,7 +527,7 @@ window.loadThread = async function (id) {
 // ─── Hyper-Space Idle Animation ─────────────────────────────
 
 let idleTimer;
-const IDLE_TIME = 120000; // 2 mins
+const IDLE_TIME = 300000; // 5 mins
 
 window.resetIdleTimer = function () {
   clearTimeout(idleTimer);

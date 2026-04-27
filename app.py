@@ -383,7 +383,18 @@ def api_admin_scrape():
         return jsonify({"error": "Unauthorized"}), 403
     try:
         data = scraper.scrape_live_scholarships()
-        return jsonify(data)
+        
+        # Filter out scholarships that already exist in our DB (by name)
+        from database import get_all_scholarships_summary
+        existing = get_all_scholarships_summary()
+        existing_names = {s['name'].lower().strip() for s in existing}
+        
+        filtered_data = [
+            s for s in data 
+            if s['name'].lower().strip() not in existing_names
+        ]
+        
+        return jsonify(filtered_data)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

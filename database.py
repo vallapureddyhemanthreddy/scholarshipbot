@@ -299,7 +299,7 @@ def get_all_scholarships_summary():
 def get_all_scholarships_full():
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT * FROM scholarships ORDER BY id")
+    c.execute("SELECT * FROM scholarships ORDER BY id DESC")
     rows = c.fetchall()
     conn.close()
     return [dict(r) for r in rows]
